@@ -22,12 +22,16 @@ encrypto_aes = "0.1.0"
 
 ## You can try:
 
-```rust
-  let msg = b"abc";
-    let mut c = EncryptoAES::init(256).unwrap();
-    let enc = c.encrypt_cbc(msg);
-    let dec = c.decrypt_cbc(enc.clone());
-    assert_eq!(&*msg.as_slice(), dec);
+```rust       
+ let msg = b"abc";
+        let mut c = EncryptoAES::init(256).unwrap();
+        let enc = c.encrypt_cbc(msg);
+        let dec = c.decrypt_cbc(enc.clone());
+        assert_eq!(&*msg.as_slice(), dec);
+
+        let enc = c.encrypt_cfb128(msg);
+        let dec = c.decrypt_cfb128(zenc.clone());
+        assert_eq!(&*msg.as_slice(), dec);
 ```
 
 ### Please raise an issue [here](https://github.com/zotcrypto/encrypto-aes/issues) if the documentation isn't uploaded in long time
