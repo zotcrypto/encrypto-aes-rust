@@ -12,7 +12,7 @@ End to End encryption (AES) for multiple languages (cross-platform) with [CBC](h
 ## Implementation
 ### Cargo
 ```xml
-encrypto_aes = "0.1.0"
+encrypto_aes = "0.2.0"
 ```
 
 ## RSA
