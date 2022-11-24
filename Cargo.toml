@@ -1,6 +1,6 @@
 [package]
 name = "encrypto_aes"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 description = "stunning-encrypto is cross platform end-to-end encryption dependency. And this is AES extension of the same"
 homepage = "https://www.ssdd.dev/zot/crypto/aes"
