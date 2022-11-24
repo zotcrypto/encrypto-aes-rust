@@ -24,6 +24,10 @@ mod tests {
         let enc = c.encrypt_cbc(msg);
         let dec = c.decrypt_cbc(enc.clone());
         assert_eq!(&*msg.as_slice(), dec);
+
+        let enc = c.encrypt_cfb128(msg);
+        let dec = c.decrypt_cfb128(zenc.clone());
+        assert_eq!(&*msg.as_slice(), dec);
     }
 }
 
@@ -86,6 +90,23 @@ impl EncryptoAES {
         let iv = base64::decode(json.get("iv").unwrap().as_str().unwrap().as_bytes()).unwrap();
         let data = base64::decode(json.get("cypher").unwrap().as_str().unwrap().as_bytes()).unwrap();
         self.c.cbc_decrypt(&*iv, &*data)
+    }
+
+    pub fn encrypt_cfb128(&mut self, data: &[u8])-> String {
+        let iv = self.rng.gen_biguint(self.bitlen as u64).to_bytes_le();
+        let enc = self.c.cfb128_encrypt(iv.as_slice(), data);
+        let mut hm = HashMap::<&str, String>::new();
+        hm.insert("iv", base64::encode(iv));
+        hm.insert("cypher", base64::encode(enc));
+        base64::encode(serde_json::to_value(hm).unwrap().to_string().as_bytes())
+    }
+
+    pub fn decrypt_cfb128(&mut self, data: String) -> Vec<u8>{
+        let b64d = base64::decode(data.as_bytes()).unwrap();
+        let json: Value = serde_json::from_slice(&*b64d).unwrap();
+        let iv = base64::decode(json.get("iv").unwrap().as_str().unwrap().as_bytes()).unwrap();
+        let data = base64::decode(json.get("cypher").unwrap().as_str().unwrap().as_bytes()).unwrap();
+        self.c.cfb128_decrypt(&*iv, &*data)
     }
 
 }
