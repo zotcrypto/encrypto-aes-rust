@@ -2,8 +2,13 @@
 name = "encrypto_aes"
 version = "0.1.0"
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+description = "stunning-encrypto is cross platform end-to-end encryption dependency. And this is AES extension of the same"
+homepage = "https://www.ssdd.dev/zot/crypto/aes"
+repository = "https://github.com/zotcrypto/encrypto-aes"
+readme = "README.md"
+keywords = ["AES", "end-to-end-encrypton", "stunning-encrypto", "encryption", "rust-e2ee"]
+categories = ["cryptography"]
+license = "MIT"
 
 [dependencies]
 rand = "0.8.5"
