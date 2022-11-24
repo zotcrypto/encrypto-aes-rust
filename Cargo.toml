@@ -1,0 +1,13 @@
+[package]
+name = "encrypto_aes"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+rand = "0.8.5"
+num-bigint = { version = "0.4.3", features = ["rand", "serde"] }
+serde = { version = "1.0.147", features = ["derive"] }
+serde_json = {version = "1.0.89"}
+base64 = "0.13.1"
