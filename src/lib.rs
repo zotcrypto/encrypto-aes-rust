@@ -15,14 +15,8 @@ mod aes;
 
 #[cfg(test)]
 mod tests {
-    use std::collections::HashMap;
-    use std::fmt::format;
-    use std::thread::spawn;
     use encrypto_rsa::EncryptoRSA;
-    use num_bigint::{BigUint, RandBigInt};
-    use rand::thread_rng;
-    use serde_json::Value;
-    use crate::{Cipher, EncryptoAES};
+    use crate::{EncryptoAES};
 
     #[test]
     fn bytes(){
@@ -67,13 +61,8 @@ mod tests {
         let encrypto = EncryptoRSA::init(1024);
 
         let mut x = EncryptoAES::desterilize_encrypted_key(c.get_encrypted_sterilised_key(encrypto.get_public_key()), encrypto);
-        let mut foo = 0;
-        while foo != 1000000 {
-            let enc = c.encrypt_cbc(msg);
-            x.decrypt_cbc(enc);
-            foo += 1;
-            // assert_eq!(msg.to_vec(), x.decrypt_cbc(enc));
-        }
+        let enc = c.encrypt_cbc(msg);
+        assert_eq!(msg.to_vec(), x.decrypt_cbc(enc));
     }
 }
 

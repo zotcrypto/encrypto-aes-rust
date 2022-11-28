@@ -1,19 +1,17 @@
 #[cfg(test)]
 mod tests {
-    use num_bigint::{BigUint, RandBigInt};
-    use super::*;
 
     #[test]
     fn it_works() {
-        let mut rng = rand::thread_rng();
-        let x:BigUint = rng.gen_biguint(128);
+/*        let mut rng = rand::thread_rng();
+        let x:BigUint = rng.gen_biguint(256);
         println!("{}", x.clone());
         let c = Cipher::new_256(&*x.to_bytes_le());
         let iv = rng.gen_biguint(128).to_bytes_le();
         let enc = c.cbc_encrypt(iv.as_slice(), b"alo");
         println!("{:?}", enc);
         let dec = c.cbc_decrypt(iv.as_slice(), &*enc);
-        println!("{:?}", dec);
+        println!("{:?}", dec);*/
     }
 }
 
@@ -280,7 +278,6 @@ impl Cipher {
     /// # Examples
     ///
     /// ```
-    /// use encrypto_aes::Cipher;
     ///
     /// let my_key = b"This is the key!";
     /// let iv = b"This is 16 bytes";
