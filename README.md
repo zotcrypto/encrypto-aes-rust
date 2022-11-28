@@ -53,4 +53,4 @@ encrypto_aes = "0.2.0"
 
 ## License
 
-### Click [here](https://github.com/zotcrypto/encrypto-aes/LICENSE.md)
+### Click [here](LICENSE.md)
