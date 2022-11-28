@@ -42,11 +42,11 @@ End to End encryption (AES) for multiple languages (cross-platform) with [CBC](h
 
 ## Upcoming
 
-| Supported Languages | Status                                                                                                    |
-|---------------------|-----------------------------------------------------------------------------------------------------------|
-| Flutter             | Completed and available [here](https://github.com/ssddcodes/stunning-encrypto/edit/encrypto/tree/flutter) |
-| Java                | Completed and available [here](https://github.com/ssddcodes/stunning-encrypto/)                           |
-| JavaScript          | Completed and available [here](https://github.com/ssddcodes/stunning-encrypto/edit/encrypto/tree/js)      |
+| Supported Languages | Status              |
+|---------------------|---------------------|
+| Flutter             | Priority: Less      |
+| Java                | Priority: Very high |
+| JavaScript          | Priority: High      |
 
 * Amazing encrypto with prevention against man in the middle attacks and AES-CBC with RSA key exchange for multiple language
 
