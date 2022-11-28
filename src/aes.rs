@@ -15,27 +15,6 @@ mod tests {
     }
 }
 
-/// # Examples
-//
-/// ```
-/// // Example for AES-128 CBC mode
-///
-/// use encrypto_aes::Cipher;
-///
-/// let my_key = b"This is the key!"; // key is 16 bytes, i.e. 128-bit
-/// let plaintext = b"A plaintext";
-/// let iv = b"This is 16 bytes";
-///
-/// // Create a new 128-bit cipher
-/// let cipher = Cipher::new_128(my_key);
-///
-/// // Encryption
-/// let encrypted = cipher.cbc_encrypt(iv, plaintext);
-///
-/// // Decryption
-/// let decrypted = cipher.cbc_decrypt(iv, &encrypted[..]);
-/// ```
-
 const AES_BLOCK_SIZE: usize = 16;
 // in bytes
 const AES_MAX_ROUNDS: usize = 14;
@@ -58,16 +37,6 @@ impl Cipher {
     ///
     /// Once created, a cipher can encrypt or decrypt any times of data using the same key.
     /// `user_key` must be at length of 128-bits, i.e. 16 bytes.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// use encrypto_aes::Cipher;
-    /// use libaes::Cipher;
-    ///
-    /// let my_key = b"This is the key!"; // 16 bytes
-    /// let cipher = Cipher::new_128(my_key);
-    /// ```
     pub fn new_128(user_key: &[u8]) -> Cipher {
         let mut encrypt_key = AesKey {
             rd_key: [0; RD_KEY_MAX_SIZE],
@@ -93,15 +62,6 @@ impl Cipher {
     ///
     /// Once created, a cipher can encrypt or decrypt any times of data using the same key.
     /// `user_key` must be at length of 192-bits, i.e. 24 bytes.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// use encrypto_aes::Cipher;
-    ///
-    /// let my_key = b"This is the key! 192 bit"; // 24 bytes
-    /// let cipher = Cipher::new_192(my_key);
-    /// ```
     pub fn new_192(user_key: &[u8]) -> Cipher {
         let mut encrypt_key = AesKey {
             rd_key: [0; RD_KEY_MAX_SIZE],
@@ -125,15 +85,6 @@ impl Cipher {
     ///
     /// Once created, a cipher can encrypt or decrypt any times of data using the same key.
     /// `user_key` must be at length of 256-bits, i.e. 32 bytes.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// use encrypto_aes::Cipher;
-    ///
-    /// let my_key = b"This is the key!This is the key!"; // 32 bytes
-    /// let cipher = Cipher::new_256(my_key);
-    /// ```
     pub fn new_256(user_key: &[u8]) -> Cipher {
         let mut encrypt_key = AesKey {
             rd_key: [0; RD_KEY_MAX_SIZE],
@@ -159,18 +110,6 @@ impl Cipher {
     /// `iv` is a 16-byte slice. Panics if `iv` is less than 16 bytes.
     ///
     /// This method works for all key sizes.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// use encrypto_aes::Cipher;
-    ///
-    /// let my_key = b"This is the key!"; // key is 16 bytes
-    /// let plaintext = b"A plaintext"; // less than 16 bytes, will be padded automatically
-    /// let iv = b"This is 16 bytes";
-    /// let cipher = Cipher::new_128(my_key);
-    /// let encrypted = cipher.cbc_encrypt(iv, plaintext);
-    /// ```
     pub fn cbc_encrypt(&self, iv: &[u8], data: &[u8]) -> Vec<u8> {
         let mut padded = pad(data);
         let mut my_iv = iv;
@@ -194,22 +133,6 @@ impl Cipher {
     /// `iv` is a 16-byte slice. Panics if `iv` is less than 16 bytes.
     ///
     /// This method works for all key sizes.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// use encrypto_aes::Cipher;
-    ///
-    /// let my_key = b"This is the key!";
-    /// let iv = b"This is 16 bytes";
-    /// let plaintext = b"This is plain text for AES";
-    /// let ciphertext = b"\xfe\x2e\xa4\x03\xd2\x65\xa9\xe6\x78\xee\x16\x35\xf3\xa6\xe6\xf4\
-    ///                    \xa3\x16\xb6\xd4\x35\x6d\x2b\x6f\x49\xff\x9e\x3c\xe4\x66\x16\xb9";
-    ///
-    /// let cipher = Cipher::new_128(my_key);
-    /// let decrypted = cipher.cbc_decrypt(iv, ciphertext);
-    /// assert_eq!(plaintext, &decrypted[..]);
-    /// ```
     pub fn cbc_decrypt(&self, iv: &[u8], data: &[u8]) -> Vec<u8> {
         let length = data.len();
         if (length % AES_BLOCK_SIZE) != 0 {
@@ -232,18 +155,6 @@ impl Cipher {
     ///
     /// The input `data` is not modified. The output is a new Vec. No padding.
     /// `iv` is a 16-byte slice. Panics if `iv` is less than 16 bytes.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// use encrypto_aes::Cipher;
-    ///
-    /// let my_key = b"This is the key!"; // key is 16 bytes, i.e. 128-bit
-    /// let plaintext = b"A plaintext"; // less than 16 bytes, will be padded automatically
-    /// let iv = b"This is 16 bytes";
-    /// let cipher = Cipher::new_128(my_key);
-    /// let encrypted = cipher.cfb128_encrypt(iv, plaintext);
-    /// ```
     pub fn cfb128_encrypt(&self, iv: &[u8], data: &[u8]) -> Vec<u8> {
         let mut new = data.to_vec();
         let mut rest = &mut new[..];
@@ -274,21 +185,6 @@ impl Cipher {
     ///
     /// The input `data` is not modified. The output is a new Vec. No padding.
     /// `iv` is a 16-byte slice. Panics if `iv` is less than 16 bytes.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    ///
-    /// let my_key = b"This is the key!";
-    /// let iv = b"This is 16 bytes";
-    /// let plaintext = b"This is plain text for AES";
-    /// let ciphertext = b"\x16\x94\x9e\xe0\x7c\x4b\x7a\xc2\x83\xca\x96\x4f\xae\
-    ///                    \x6a\x35\xbc\x8e\xdb\x19\x0a\x4d\x8d\x19\x59\x0f\x2a";
-    ///
-    /// let cipher = Cipher::new_128(my_key);
-    /// let decrypted = cipher.cfb128_decrypt(iv, ciphertext);
-    /// assert_eq!(plaintext, &decrypted[..]);
-    /// ```
     pub fn cfb128_decrypt(&self, iv: &[u8], data: &[u8]) -> Vec<u8> {
         let length = data.len();
         let mut new = data.to_vec();

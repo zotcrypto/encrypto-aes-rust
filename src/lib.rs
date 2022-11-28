@@ -58,7 +58,7 @@ mod tests {
         // let dec = c.decrypt_cfb128(enc.clone());
         // assert_eq!(&*msg.as_slice(), dec);
 
-        let encrypto = EncryptoRSA::init(1024);
+        let encrypto = EncryptoRSA::init(512);
 
         let mut x = EncryptoAES::desterilize_encrypted_key(c.get_encrypted_sterilised_key(encrypto.get_public_key()), encrypto);
         let enc = c.encrypt_cbc(msg);
