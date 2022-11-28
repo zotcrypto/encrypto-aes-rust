@@ -1,12 +1,14 @@
 #[cfg(test)]
 mod tests {
-    use num_bigint::RandBigInt;
+    use num_bigint::{BigUint, RandBigInt};
     use super::*;
 
     #[test]
     fn it_works() {
         let mut rng = rand::thread_rng();
-        let c = Cipher::new_256(&*rng.gen_biguint(256).to_bytes_le());
+        let x:BigUint = rng.gen_biguint(128);
+        println!("{}", x.clone());
+        let c = Cipher::new_256(&*x.to_bytes_le());
         let iv = rng.gen_biguint(128).to_bytes_le();
         let enc = c.cbc_encrypt(iv.as_slice(), b"alo");
         println!("{:?}", enc);
@@ -47,7 +49,7 @@ const RD_KEY_MAX_SIZE: usize = 4 * (AES_MAX_ROUNDS + 1);
 /// The user would create a cipher first by calling `new_<key-length>()` (e.g. `new_128()`), and then
 /// call encrypt and/or decrypt methods as needed.
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Cipher {
     encrypt_key: AesKey,
     decrypt_key: AesKey,
@@ -73,12 +75,14 @@ impl Cipher {
             rd_key: [0; RD_KEY_MAX_SIZE],
             rounds: 0,
         };
+
         aes_set_encrypt_key(user_key, 128, &mut encrypt_key);
 
         let mut decrypt_key = AesKey {
             rd_key: [0; RD_KEY_MAX_SIZE],
             rounds: 0,
         };
+
         aes_set_decrypt_key(user_key, 128, &mut decrypt_key);
 
         Cipher {
@@ -672,15 +676,15 @@ fn put_u32(bytes: &mut [u8], val: u32) {
     bytes.copy_from_slice(&u8_array);
 }
 
-#[derive(Debug)]
-struct AesKey {
+#[derive(Debug, Clone)]
+pub struct AesKey {
     pub rd_key: [u32; RD_KEY_MAX_SIZE],
     // big enough for any key length
     pub rounds: u8,
 }
 
 // Expand the cipher key into the encryption key schedule.
-fn aes_set_encrypt_key(user_key: &[u8], key_bits: u16, key: &mut AesKey) {
+pub fn aes_set_encrypt_key(user_key: &[u8], key_bits: u16, key: &mut AesKey) {
     key.rounds = match key_bits {
         128 => 10,
         192 => 12,
@@ -784,7 +788,7 @@ fn aes_set_encrypt_key(user_key: &[u8], key_bits: u16, key: &mut AesKey) {
 }
 
 // Expand the cipher key into the decryption key schedule.
-fn aes_set_decrypt_key(user_key: &[u8], key_bits: u16, key: &mut AesKey) {
+pub fn aes_set_decrypt_key(user_key: &[u8], key_bits: u16, key: &mut AesKey) {
     // first, start with an encryption schedule
     aes_set_encrypt_key(user_key, key_bits, key);
 
@@ -925,13 +929,14 @@ fn aes_encrypt(block_buf: BlockBuf, key: &AesKey) {
 
     // apply last round and
     // map cipher state to byte array block:
-    let s0 = (TE2[(t0 >> 24) as usize] & 0xff000000)
-        ^ (TE3[(t1 >> 16) as usize & 0xff] & 0x00ff0000)
-        ^ (TE0[(t2 >> 8) as usize & 0xff] & 0x0000ff00)
-        ^ (TE1[(t3) as usize & 0xff] & 0x000000ff)
-        ^ rk[0];
+        let s0 = (TE2[(t0 >> 24) as usize] & 0xff000000)
+            ^ (TE3[(t1 >> 16) as usize & 0xff] & 0x00ff0000)
+            ^ (TE0[(t2 >> 8) as usize & 0xff] & 0x0000ff00)
+            ^ (TE1[(t3) as usize & 0xff] & 0x000000ff)
+            ^ rk[0];
     put_u32(&mut output[0..4], s0);
-    let s1 = (TE2[(t1 >> 24) as usize] & 0xff000000)
+    let s1 = (TE2[
+        (t1 >> 24) as usize] & 0xff000000)
         ^ (TE3[(t2 >> 16) as usize & 0xff] & 0x00ff0000)
         ^ (TE0[(t3 >> 8) as usize & 0xff] & 0x0000ff00)
         ^ (TE1[(t0) as usize & 0xff] & 0x000000ff)
