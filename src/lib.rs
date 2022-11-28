@@ -129,7 +129,7 @@ impl EncryptoAES {
     }
 
     pub fn priv_init(bitlen: u32, bu: BigUint) -> Result<Self> {
-        let mut rng = thread_rng();
+        let rng = thread_rng();
         match bitlen {
             128 => {
                 Ok(
