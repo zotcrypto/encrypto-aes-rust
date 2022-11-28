@@ -3,17 +3,15 @@ use std::error;
 use std::str::FromStr;
 use encrypto_rsa::{EncryptoRSA, ZotPublicKey};
 use num_bigint::{BigUint, RandBigInt};
-use rand::rngs::{OsRng, ThreadRng};
+use rand::rngs::ThreadRng;
 use rand::thread_rng;
 use serde_json::Value;
-use crate::aes::{AesKey, Cipher};
-use crate::bigint::Generator;
+use crate::aes::Cipher;
 
 
 type Result<T> = std::result::Result<T, Box<dyn error::Error>>;
 
 mod aes;
-mod bigint;
 
 #[cfg(test)]
 mod tests {
