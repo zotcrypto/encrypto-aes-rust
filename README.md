@@ -1,3 +1,8 @@
+![Visitor Badge](https://visitor-badge.laobi.icu/badge?page_id=encrypto-aes-rust)
+![Crates Badge](https://img.shields.io/crates/v/encrypto_aes)
+![Crates Downloads](https://img.shields.io/crates/d/encrypto_aes)
+
+
 # About Project
 End to End encryption (AES) for multiple languages (cross-platform) with [CBC](https://www.ssdd.dev/ssdd/zot/crypto/aes#cbc)
 
@@ -47,4 +52,4 @@ End to End encryption (AES) for multiple languages (cross-platform) with [CBC](h
 
 ## License
 
-### Click [here](https://github.com/zotcrypto/encrypto-aes/LICENSE.md)
+### Click [here](LICENSE.md)
